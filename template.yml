@@ -1,0 +1,38 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  sam-fastify-app
+  
+Globals:
+  Function:
+    Timeout: 600
+
+Resources:
+  FastifyApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: dev
+      BinaryMediaTypes: ['*/*']
+
+  FastifyFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: lambda.handler
+      Runtime: nodejs14.x
+      MemorySize: 512
+      Architectures:
+        - x86_64
+      Events:
+        FastifyFunctionProxy:
+          Type: Api
+          Properties:
+            RestApiId: !Ref FastifyApi
+            Path: "/{proxy+}"
+            Method: ANY
+        FastifyFunctionRoot:
+          Type: Api
+          Properties:
+            RestApiId: !Ref FastifyApi
+            Path: "/"
+            Method: ANY
