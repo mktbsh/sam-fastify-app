@@ -6,7 +6,7 @@
     "private": true,
     "dependencies": {
         "aws-lambda-fastify": "^1.7.1",
-        "fastify": "^3.22.0"
+        "fastify": "^3.29.4"
     },
     "scripts": {
         "dev": "node ./app.js"
